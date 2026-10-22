@@ -1,0 +1,10 @@
+{
+  "name": "Z-QEA Guardian",
+  "url": "https://github.com/SerenaSolutions/zqea-guardian",
+  "description": "Verifies the Z-QEA seal (SHA3-256) of every receipt on your pull requests — a Check Run appears automatically, no YAML needed.",
+  "redirect_url": "https://github.com/SerenaSolutions/zqea-guardian#callback",
+  "public": true,
+  "webhook_active": true,
+  "permissions": { "checks": "write", "contents": "read" },
+  "events": ["pull_request", "ping"]
+}

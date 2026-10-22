@@ -1,0 +1,17 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  verify-battery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+      - name: Cross-language seal battery
+        run: node tests/test_verify.js
+      - name: Server loads and healthz responds
+        run: |
+          PORT=3199 node server.js &
+          sleep 2
+          curl -sf http://localhost:3199/healthz | grep -q '"ok":true'

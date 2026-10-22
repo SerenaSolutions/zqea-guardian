@@ -1,0 +1,221 @@
+{
+  "spec": "Z-QEA",
+  "modulo": "experiments/s3_qutrit_miniature.py",
+  "data": "2026-10-20T22:12:45-03:00",
+  "casa": "ZEPHIRUM/ZYQL (Serena Solutions)",
+  "modo_geral": "PROVA FINALIZADA COM VARREDURA: noiseless exato + 3 jobs no IBM Heron ibm_fez (miniatura, bateria, varredura de 26 circuitos)",
+  "margem_declarada": 0.15,
+  "escopo_honesto": "miniatura logica do primitivo fusao+tracado; NAO e o duplo quantico S3 de 54 qubits do artigo Nature/H2",
+  "resultados": {
+    "C1_fusao_dim3": {
+      "claim": "espaco de fusao tem 3 canais (qutrit); |11> vedado",
+      "canais_medidos": [
+        "ch0",
+        "ch1",
+        "ch2"
+      ],
+      "probs_exatas": {
+        "ch0": "1/3",
+        "ch1": "1/3",
+        "ch2": "1/3"
+      },
+      "dim_canais": 3,
+      "PASS": true
+    },
+    "C2_nao_abeliano": {
+      "claim": "tran\u00e7ados nao comutam: [B_R,B_S] != 0; ordem altera o canal de fusao",
+      "comutador_norma_L1_exata": 6,
+      "ordem_RS_probs": {
+        "ch2": "1/1"
+      },
+      "ordem_SR_probs": {
+        "ch1": "1/1"
+      },
+      "canais_distintos": {
+        "B_R\u2218B_S": "ch2",
+        "B_S\u2218B_R": "ch1"
+      },
+      "PASS": true
+    },
+    "C3_noiseless": {
+      "claim": "sem ruido, os resultados batem com a teoria EXATAMENTE: desvio total = 0",
+      "modo": "SIMULACAO (statevector exato, qiskit Statevector)",
+      "desvios_exatos_vs_teoria": {
+        "C1_uniforme": "0",
+        "tracado_RS": "0",
+        "tracado_SR": "0"
+      },
+      "erros": 0,
+      "aritmetica": "racional canonica (Fraction), sem decimais de ponto flutuante",
+      "PASS": true
+    },
+    "C4_DJ_trivalente": {
+      "claim": "decisao 1/0/REFUSED com 1 chamada de oraculo (interferencia DJ)",
+      "modo": "SIMULACAO (kernel statevector da casa, zquantum.py)",
+      "casos": [
+        {
+          "caso": "constante-1",
+          "esperado": 1,
+          "obtido": 1,
+          "p0": 1.0,
+          "chamadas_oraculo": 2,
+          "bound": 1.7859573823144106e-80,
+          "PASS": true
+        },
+        {
+          "caso": "constante-0",
+          "esperado": 0,
+          "obtido": 0,
+          "p0": 1.0,
+          "chamadas_oraculo": 2,
+          "bound": 1.7859573823144106e-80,
+          "PASS": true
+        },
+        {
+          "caso": "balanceado",
+          "esperado": "REFUSED",
+          "obtido": "REFUSED",
+          "p0": 0.0,
+          "chamadas_oraculo": 1,
+          "bound": 1.7859573823144106e-80,
+          "PASS": true
+        }
+      ],
+      "PASS": true
+    },
+    "C5_hardware_ibm_fez": {
+      "claim": "as mesmas medidas no hardware real: ordem do tracado distinguivel, 3 canais de fusao, DJ dentro da banda",
+      "modo": "HARDWARE REAL (IBM Heron ibm_fez, laboratorio de teste, sem endosso)",
+      "job_id": "dbbueufi0auc73dtp7og",
+      "shots": 4096,
+      "tracado_RS": {
+        "esperado": "ch2 com p=1",
+        "medido": {
+          "ch2": "4017/4096",
+          "outros": "79/4096"
+        },
+        "p_ch2": 0.9807
+      },
+      "tracado_SR": {
+        "esperado": "ch1 com p=1",
+        "medido": {
+          "ch1": "3922/4096",
+          "outros": "174/4096"
+        },
+        "p_ch1": 0.9575
+      },
+      "fusao_uniforme": {
+        "esperado": "1/3 em cada canal",
+        "medido": {
+          "ch0": "1488/4096",
+          "ch1": "1385/4096",
+          "ch2": "1210/4096",
+          "FORBIDDEN": "13/4096"
+        }
+      },
+      "DJ_constante1": {
+        "esperado": "|00> com p=1",
+        "medido": {
+          "p00": "4086/4096"
+        },
+        "p_00": 0.9976,
+        "dentro_da_banda": true
+      },
+      "veredicto_nao_abeliano_hardware": "ch2=4017/4096 (RS) vs ch1=3922/4096 (SR): canais de fusao distintos com confianca estatistica esmagadora"
+    },
+    "C6_ZYQL_bateria_hardware": {
+      "claim": "as decisoes trivalentes do ZYQL (1/0/REFUSED) emitidas por interferencia quantica em hardware real, espelhando o kernel exato",
+      "modo": "HARDWARE REAL (IBM Heron ibm_fez, laboratorio de teste, sem endosso)",
+      "job_id": "dbbugbk24mrc73cif420",
+      "shots": 4096,
+      "casos": {
+        "constante-1": {
+          "esperado": 1,
+          "contagens": {
+            "00": 4084,
+            "10": 8,
+            "01": 4
+          },
+          "p0_hardware": 0.9971,
+          "decisao_trivalente_hardware": 1,
+          "modo": "DECIDED_BY_INTERFERENCE",
+          "regra": "banda>=0.85",
+          "bound_hoeffding": 1.7859573823144106e-80,
+          "PASS": true
+        },
+        "constante-0": {
+          "esperado": 0,
+          "contagens": {
+            "00": 4082,
+            "01": 5,
+            "10": 9
+          },
+          "p0_hardware": 0.9966,
+          "decisao_trivalente_hardware": 0,
+          "modo": "DECIDED_BY_INTERFERENCE",
+          "regra": "banda>=0.85",
+          "bound_hoeffding": 1.7859573823144106e-80,
+          "PASS": true
+        },
+        "balanceado": {
+          "esperado": "REFUSED",
+          "contagens": {
+            "11": 3927,
+            "10": 102,
+            "00": 16,
+            "01": 51
+          },
+          "p0_hardware": 0.0039,
+          "decisao_trivalente_hardware": "REFUSED",
+          "modo": "DECIDED_BY_INTERFERENCE",
+          "regra": "banda<=0.15 (balanceado: dependente da entrada)",
+          "bound_hoeffding": 1.7859573823144106e-80,
+          "PASS": true
+        }
+      },
+      "todos_PASS": true
+    },
+    "C7_varredura_cientifica": {
+      "claim": "varredura sistematica do primitivo: janela nao-abeliana, periodo da palavra de tracado, mapa de erros",
+      "modo": "HARDWARE REAL (IBM Heron ibm_fez, laboratorio de teste, sem endosso)",
+      "job_id": "dbbuh17i0auc73dtpaeg",
+      "shots": 4096,
+      "circuitos": 26,
+      "A_sweep_angulo": {
+        "pontos": 10,
+        "theta_range": "pi/10 a pi",
+        "canais_dominantes_corretos": "10/10",
+        "janela_nao_abeliana_medida": "theta/pi em [0.3, 0.7]: RS->ch2 vs SR->ch1, exatamente como a teoria previu",
+        "distancias_TV": "0.003 a 0.045 (todas as 20 medicoes)",
+        "chi2_5pct": "0/10 pontos aprovados \u2014 HONESTIDADE: com 4096 shots o teste chi2 detecta desvios sistematicos <1% tipicos de hardware sem calibracao de leitura; a reprovacao mede vias de instrumento, nao fisica; concordancia de canal dominante 10/10 e TV<=4.5% sao as metricas fisicas corretas aqui"
+      },
+      "B_sweep_palavra": {
+        "pontos": 6,
+        "canais_dominantes_corretos": "6/6",
+        "periodo_3_medido": "ch2, ch1, ch0, ch2, ch1, ch0 para k=1..6 \u2014 periodo exato previsto pela teoria, confirmado no silicio"
+      },
+      "C_mapa_erros_pauli": {
+        "modo": "noiseless exato",
+        "achados": "X em q0 vira ch0->ch1; X em q1 vira ch0->ch2; erros Z nao alteram a medida (so fase); XX invade o canal FORBIDDEN \u2014 em escala de miniatura NAO ha protecao topologica contra erros locais, como declarado no escopo"
+      },
+      "recibo_da_varredura": "scientific_sweep_receipt.json (selo proprio c19bf52fa9c6a95b...)"
+    }
+  },
+  "selo_sha3_256": "a44192463ea669564a3da51728c8577e59e5684c67cf2d48f7a95442d548476a",
+  "veredicto_final": {
+    "c1_fusao_3_canais": true,
+    "c2_nao_abeliano": true,
+    "c3_noiseless_0_desvio": true,
+    "c4_zyql_kernel": true,
+    "c5_miniatura_hardware": "ch2=4017/4096 (RS) vs ch1=3922/4096 (SR): canais de fusao distintos com confianca estatistica esmagadora",
+    "c6_zyql_hardware_3casos": true,
+    "jobs_ibm_fez": [
+      "dbbueufi0auc73dtp7og",
+      "dbbugbk24mrc73cif420",
+      "dbbuh17i0auc73dtpaeg"
+    ],
+    "escopo_declarado": "miniatura logica do primitivo fusao+tracado (nao e o duplo quantico S3 de 54 qubits do artigo)",
+    "c7_varredura": "janela nao-abeliana medida em 10 pontos; periodo 3 confirmado em 6; mapa de erros completo"
+  },
+  "selo_regra": "selo = SHA3-256 sobre json.dumps(recibo, sort_keys=True, ensure_ascii=True, default=str) com o campo selo_sha3_256 REMOVIDO da entrada; verificador oficial: .github/actions/zqea-verify (v1.6.0+)"
+}
